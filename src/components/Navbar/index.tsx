@@ -9,11 +9,12 @@ import {
   ActionIcon,
   Container,
   Card,
+  Button,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './index.module.css';
 import { TwitterLogoIcon, LinkedInLogoIcon, GitHubLogoIcon } from '@radix-ui/react-icons';
-import { Link } from 'react-router-dom';
+import { Link, redirect } from 'react-router-dom';
 
 const Navbar = () => {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
@@ -46,13 +47,13 @@ const Navbar = () => {
             </Group>
   
             <Group>
-                <ActionIcon variant={'light'} size={'lg'} radius={'md'}>
+                <ActionIcon component={'a'} variant={'light'} size={'lg'} radius={'md'} href="https://x.com/alamahmed2003" target='_blank'>
                     <TwitterLogoIcon fill={'true'} color={'black'}/>
                 </ActionIcon>
-                <ActionIcon variant={'light'} size={'lg'} radius={'md'}>
+                <ActionIcon component={'a'} variant={'light'} size={'lg'} radius={'md'} href="https://github.com/alamahmed" target='_blank'>
                     <GitHubLogoIcon color={'black'}/>
                 </ActionIcon>
-                <ActionIcon variant={'light'} size={'lg'} radius={'md'}>
+                <ActionIcon component={'a'} variant={'light'} size={'lg'} radius={'md'} href="https://www.linkedin.com/in/alam-ahmed" target='_blank'>
                     <LinkedInLogoIcon color={'black'}/>
                 </ActionIcon>
             </Group>
