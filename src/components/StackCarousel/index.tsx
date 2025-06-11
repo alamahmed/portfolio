@@ -18,7 +18,6 @@ export interface cardData {
 interface cardDataArray {
   cardData: cardData[],
 }
-// type cardDataArray = cardData[];
 
 const StackCarousel = ( { cardData }:cardDataArray ) => {
   const matches = useMediaQuery('(min-width: 56.25em)');
@@ -142,15 +141,15 @@ const StackCarousel = ( { cardData }:cardDataArray ) => {
         position: 'relative', 
         width: matches ? '500px' : '100%', 
         height: matches ? '400px' : '350px',
-        maxWidth: '500px'
+        maxWidth: '500px',
       }}>
         {cards.map((card, index) => (
           <div
             key={index}
             style={{
               position: 'absolute',
-              width: '100%',
-              height: '100%',
+              width: '95%',
+              height: '90%',
               transform: card.transform,
               transition: card.transition,
               opacity: card.opacity,
