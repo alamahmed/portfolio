@@ -1,8 +1,4 @@
 .scrollbar {
-  /* &, .mantine-ScrollArea-root {
-      background-color: red;
-      border-radius: var(--mantine-spacing-xl);
-    } */
     &[data-orientation='vertical'] .thumb {
         visibility: hidden;
   }

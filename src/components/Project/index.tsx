@@ -1,98 +1,98 @@
-import { Button, Card, Flex, Image, Space, Text, Title } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import { Badge, Button, Card, Flex, Image, Space, Text, Title } from "@mantine/core";
+import { useMediaQuery, useColorScheme } from "@mantine/hooks";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { get_data } from "../../api";
+import { useEffect, useState } from "react";
+import classes from './index.module.css';
+
+interface project_data_type {
+  color: string,
+  description: string,
+  image_link: string,
+  link: string,
+  name: string,
+  technologies_used: string[],
+}
 
 const Project = () => {
   const matches = useMediaQuery('(min-width: 56.25em)');
+  const colorScheme = useColorScheme();
+  const [projects, setProjects] = useState<project_data_type[]>([]);
   
-  const projects = [
-    {
-        color: 'cyan.1',
-        technologies: ['reactJS'],
-        title: "Project 1",
-        image: "https://imgs.search.brave.com/wakDsFvTwhb9UdsJW7UslvRwy_kUpLFZteRylFwJ6tg/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJhY2Nlc3Mu/Y29tL2Z1bGwvMzk2/NjczLmpwZw",
-        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita aperiam provident nam ad nesciunt libero sint quas ea! Fugit voluptates, cupiditate a quo earum ullam. Ut minus nesciunt rerum impedit!",
-    },
-    {
-        color: 'lime.0',
-        technologies: ['reactJS'],
-        title: "Project 2",
-        image: "https://imgs.search.brave.com/wakDsFvTwhb9UdsJW7UslvRwy_kUpLFZteRylFwJ6tg/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJhY2Nlc3Mu/Y29tL2Z1bGwvMzk2/NjczLmpwZw",
-        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita aperiam provident nam ad nesciunt libero sint quas ea! Fugit voluptates, cupiditate a quo earum ullam. Ut minus nesciunt rerum impedit!",
-    },
-    {
-        color: 'dark.0',
-        technologies: ['reactJS', 'test1', 'test2', 'test3'],
-        title: "Project 3",
-        image: "https://imgs.search.brave.com/wakDsFvTwhb9UdsJW7UslvRwy_kUpLFZteRylFwJ6tg/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJhY2Nlc3Mu/Y29tL2Z1bGwvMzk2/NjczLmpwZw",
-        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita aperiam provident nam ad nesciunt libero sint quas ea! Fugit voluptates, cupiditate a quo earum ullam. Ut minus nesciunt rerum impedit!",
-    },
-  ];
+  const set_data = (data: {projects: project_data_type[]}) => {
+    setProjects(data.projects);
+  }
 
+  useEffect(() => {
+    get_data("Projects", set_data);
+  }, [])
+  
   return (
     <Flex 
       direction={'column'} 
       align={matches ? 'flex-end' : 'center'}
+      gap={'md'}
     >
         {
           projects.map((items) => (
             <Card
               bg={items.color}
-              p={'xl'}
+              p={matches ? 'xl' : 'md'}
               radius={'lg'}
-              mt={'xl'}
               w={'90%'}
+              className={colorScheme === 'dark' ? classes.darkCard : ''}
             >
-              
-              <Card.Section p={'xl'}>
-                {items.technologies.map((item) => (
-                    <Button 
+              <Card.Section p={matches ? 'xl' : 'md'}>
+                <Flex wrap="wrap" gap="xs">
+                  {items.technologies_used.map((item) => (
+                    <Badge 
                       variant={'outline'}
+                      p={'md'}
                       color={'darkgray'}
-                      styles={{
-                        inner: {
-                          color: 'black',
-                        }
-                      }}
-                      mr={'md'}
+                      className={classes.techBadge}
                     >
-                        {item}
-                    </Button>
-                ))}
+                      {item}
+                    </Badge>
+                  ))}
+                </Flex>
               </Card.Section>
               
-              <Card.Section px={'xl'}>
-                <Title>
-                  {items.title}
+              <Card.Section px={matches ? 'xl' : 'md'}>
+                <Title ta={matches ? 'left' : 'center'}>
+                  {items.name}
                 </Title>
               </Card.Section>
 
-              <Card.Section px={'xl'} py={'md'}>
-                <Image 
-                  w={'90%'}
-                  radius={'lg'}
-                  src={items.image} 
-                  alt='Project Image'
-                />
+              <Card.Section px={matches ? 'xl' : 'md'} py={'md'}>
+                <Flex justify="center">
+                  <Image 
+                    w={matches ? '90%' : '100%'}
+                    radius={'lg'}
+                    src={items.image_link} 
+                    alt='Project Image'
+                  />
+                </Flex>
               </Card.Section>
 
-              <Card.Section px={'xl'}>
-                <Text>
+              <Card.Section px={matches ? 'xl' : 'md'}>
+                <Text ta={matches ? 'left' : 'center'}>
                   {items.description}
                 </Text>
               </Card.Section>
               
-              <Card.Section px={'xl'} py={'lg'}>
-                <Button
-                  color={'black'}
-                  radius={'md'}
-                >
-                  View Project
-                  <Space w={'xs'} />
-                  <ArrowRightIcon />
-                </Button>
+              <Card.Section px={matches ? 'xl' : 'md'} py={'lg'}>
+                <Flex justify={matches ? 'flex-start' : 'center'}>
+                  <Button
+                    color={colorScheme === 'dark' ? 'gray' : 'black'}
+                    radius={'md'}
+                    onClick={() => window.open(items.link, '_blank')}
+                  >
+                    View Project
+                    <Space w={'xs'} />
+                    <ArrowRightIcon />
+                  </Button>
+                </Flex>
               </Card.Section>
-
             </Card>
           ))
         }

@@ -11,3 +11,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+[data-mantine-color-scheme="dark"] {
+  color: white !important;
+}
+
+[data-mantine-color-scheme="dark"] * {
+  color: white !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Text-root,
+[data-mantine-color-scheme="dark"] .mantine-Title-root {
+  color: white !important;
+}

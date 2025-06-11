@@ -1,80 +1,88 @@
-import React from "react";
-import StackCarousel from '../../components/StackCarousel/index'
+import React, { useEffect, useState } from "react";
+import StackCarousel, { cardData } from '../../components/StackCarousel/index'
 import { AspectRatio, Card, Container, Flex, Image, Text, Title, Button, Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { Link } from "react-router-dom";
-// import classes from './index.module.css';
+import { get_skills, get_data, get_resume_url, get_about_me } from "../../api";
 
-interface cardData {
-    technology: string,
-    title: string,
+interface projectData {
+    name: string,
     description: string,
+    technologies_used: string[],
     color: string,
-    transform: string,
-    transition: string,
-    opacity: number,
-    zIndex: number,
+    link: string,
 }
   
 const Home = () => {
     const matches = useMediaQuery('(min-width: 56.25em)');
+    const [resumeUrl, setResumeUrl] = useState('');
+    const [projects, setProjects] = useState<cardData[]>([]);
+    const [aboutMe, setAboutMe] = useState<string | null>(null);
 
-    const projects: cardData[] = [
-        {
-            technology: 'reactJS',
-            title: "Project 1",
-            description: "description 1",
-            color: 'var(--mantine-color-dark-1)',
-            transform: "translate(40px, 30px)",
-            transition: "transform 500ms ease-in-out, opacity 500ms ease-in-out, background-color 500ms ease-in-out",
-            opacity: 1,
-            zIndex: 1,
-        },
-        {
-            technology: 'reactJS',
-            title: "Project 2",
-            description: "description 2",
-            color: 'var(--mantine-color-dark-4)',
-            transform: "translate(20px, 15px)",
-            transition: "transform 500ms ease-in-out, opacity 500ms ease-in-out, background-color 500ms ease-in-out",
-            opacity: 1,
-            zIndex: 2,
-        },
-        {
-            technology: 'reactJS',
-            title: "Project 3",
-            description: "description 3",
-            color: 'var(--mantine-color-dark-8)',
-            transform: "translate(0px, 0px)",
-            transition: "transform 500ms ease-in-out, opacity 500ms ease-in-out, background-color 500ms ease-in-out",
-            opacity: 1,
-            zIndex: 3,
-        },
-    ];
+    const set_projects_data = (data: {projects: projectData[]}) => {
+        // Take only the first 3 projects and transform them for the carousel
+        const limitedProjects = data.projects.slice(0, 3).map((project, index) => {
+            return {
+                technology: project.technologies_used,
+                title: project.name,
+                description: project.description,
+                color: 'var(--mantine-color-dark-8)',
+                link: project.link,
+                transform: index === 0 
+                    ? "translate(40px, 30px)"
+                    : index === 1 
+                        ? "translate(20px, 15px)"
+                        : "translate(0px, 0px)",
+                transition: "transform 500ms ease-in-out, opacity 500ms ease-in-out, background-color 500ms ease-in-out",
+                opacity: 1,
+                zIndex: index + 1,
+            };
+        });
+        setProjects(limitedProjects);
+    }
 
-    const data = [
-        {skill: 'C++'},
-        {skill: 'Python'},
-        {skill: 'JavaScript'},
-        {skill: 'TypeScript'},
-        {skill: 'ReactJS'},
-        {skill: 'NextJS'},
-        {skill: 'ThreeJS'},
-        {skill: 'SQL'},
-        {skill: 'Playwright'},
-        {skill: 'Selenium'},
-        {skill: 'Jira'},
-        {skill: 'Firebase'},
-        
-    ]
-    const skills = data.map((item) => {
+    useEffect(() => {
+        get_data("Projects", set_projects_data);
+    }, []);
+
+    const [skills, setSkillsData] = useState<string[]>([]);
+  
+    const set_skills_data = (data: string[]) => {
+        setSkillsData(data);
+    }
+    
+    useEffect(() => {
+        get_skills(set_skills_data)
+    }, [])
+
+    useEffect(() => {
+        get_resume_url((url) => {
+            setResumeUrl(url + '?alt=media');
+        });
+    }, []);
+
+    useEffect(() => {
+        console.log('Fetching about me data...');
+        get_about_me((data) => {
+            console.log('Received about me data:', data);
+            setAboutMe(data);
+        });
+    }, []);
+
+    const set_skills = skills.map((item, index) => {
         return (
-            <Button variant={'light'} mr={'md'} mt={'md'} radius={'md'} styles={{
-                root: {
-                    cursor: ''
-                }
-            }}>
-                {item.skill}
+            <Button 
+                key={index}
+                variant={'light'} 
+                mr={'md'} 
+                mt={'md'} 
+                radius={'md'} 
+                styles={{
+                    root: {
+                        cursor: 'default'
+                    }
+                }}
+            >
+                {item}
             </Button>
         );
     })
@@ -82,62 +90,85 @@ const Home = () => {
     return (
         <Container size={'xl'} pt={'md'}>
             <Card withBorder radius={'lg'} p={0}>
-                <Flex direction={ matches ? 'row' : 'column' } justify={'space-between'} align={'center'}>
+                <Flex 
+                    direction={matches ? 'row' : 'column'} 
+                    justify={'space-between'} 
+                    align={'center'}
+                    gap={matches ? 0 : 'md'}
+                >
                     <Card.Section w={matches ? '25%' : '100%'} m={0} p={'md'}>
                         <AspectRatio ratio={1/1}>
                             <Image radius={'lg'} src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt={'image'}/>
                         </AspectRatio>
                     </Card.Section>
-                    <Card.Section w={'74%'} m={0} p={'md'}>
-                        <Title>
+                    <Card.Section w={matches ? '74%' : '100%'} m={0} p={'md'}>
+                        <Title order={2} mb={'md'}>
                             About me
                         </Title>
-                        <Text>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut iure, natus quos officia repellendus minima doloremque cum molestiae, sapiente vel voluptate, dolor incidunt! Explicabo, eveniet deserunt expedita qui fugiat eos!
+                        <Text size={matches ? 'md' : 'sm'}>
+                            {aboutMe === null ? "Loading..." : aboutMe || "No about me text available"}
                         </Text>
                     </Card.Section>
                 </Flex>
             </Card>
-            <Flex direction={matches ? 'row' : 'column'} my={'md'} justify={matches ? 'space-between' : 'space-evenly'}>
-                <Card withBorder radius={'lg'} w={matches ? '49%' : '100%'} p={'xl'}>
-                        <Card.Section px={'xl'} pb={'md'}>
-                            <Title>My Projects</Title>
-                        </Card.Section>
-                        <Card.Section px={'xl'}>
-                            <AspectRatio ratio={matches ? 2/1.1 : 1/1} >
+            <Flex 
+                direction={matches ? 'row' : 'column'} 
+                my={'md'} 
+                justify={matches ? 'space-between' : 'space-evenly'}
+                gap={matches ? 0 : 'md'}
+            >
+                <Card withBorder radius={'lg'} h={matches ? 'auto' : '60vh'} w={matches ? '49%' : '100%'} p={matches ? 'xl' : 'md'}>
+                    <Card.Section px={matches ? 'xl' : 'md'} pb={'md'}>
+                        <Title order={2}>My Projects</Title>
+                    </Card.Section>
+                    <Card.Section px={matches ? 'xl' : 'md'}>
+                        {projects.length > 0 ? (
                             <StackCarousel cardData={projects}/>
-                            </AspectRatio>
-                        </Card.Section>
+                        ) : (
+                            <Text>Loading projects...</Text>
+                        )}
+                    </Card.Section>
                 </Card>
-                <Stack w={matches ? '49%' : '100%'} justify="space-between" mt={matches ? 0 : '5%'}>
-                    <Card withBorder radius={'lg'} py={'xl'} mb={'lg'}>
+                <Stack w={matches ? '49%' : '100%'} justify="space-between" mt={matches ? 0 : 'md'}>
+                    <Card withBorder radius={'lg'} p={matches ? 'xl' : 'md'} mb={'md'}>
                         <Flex direction={'column'} justify={'center'}>
-                            <Card.Section px={'xl'}>
-                                <Title>Skills</Title>
+                            <Card.Section px={matches ? 'xl' : 'md'}>
+                                <Title order={2}>Skills</Title>
                             </Card.Section>
-                            <Card.Section px={'xl'}>
-                                {skills}
+                            <Card.Section px={matches ? 'xl' : 'md'}>
+                                {set_skills}
                             </Card.Section>
                         </Flex>
                     </Card>
-                    <Card withBorder radius={'lg'} py={'xl'}>
-                        <Flex direction={matches ? 'row' : 'column'} align={matches ? 'center' : 'flex-start'} justify={'space-evenly'} >
-                            <Title>Resume</Title>
-                                <Card bg={'black'} radius={'lg'} p={'md'} w={matches ? '70%' : '100%'}>
-                                    <Flex align={'center'} justify={'space-evenly'} p={'md'}>
-                                        <Title order={4} c={'white'}>
-                                            More details about my career
-                                        </Title>
-                                        <Link to={'/resume'} style={{textDecoration: 'none'}}>
-                                            <Button 
-                                                variant={'outline'} 
-                                                c={'white'}
-                                            >
-                                                    Open
-                                            </Button>
-                                        </Link>
-                                    </Flex>
-                                </Card>
+                    <Card withBorder radius={'lg'} p={matches ? 'xl' : 'md'}>
+                        <Flex 
+                            direction={matches ? 'row' : 'column'} 
+                            align={matches ? 'center' : 'flex-start'} 
+                            justify={'space-evenly'}
+                            gap={matches ? 0 : 'md'}
+                        >
+                            <Title order={2}>Resume</Title>
+                            <Card bg={'black'} radius={'lg'} p={'md'} w={matches ? '70%' : '100%'}>
+                                <Flex 
+                                    direction={matches ? 'row' : 'column'}
+                                    align={'center'} 
+                                    justify={'space-evenly'} 
+                                    p={'md'}
+                                    gap={matches ? 0 : 'md'}
+                                >
+                                    <Title order={4} c={'white'} ta={matches ? 'left' : 'center'}>
+                                        More details about my career
+                                    </Title>
+                                    <Button 
+                                        variant={'outline'} 
+                                        c={'white'}
+                                        fullWidth
+                                        onClick={() => window.open(resumeUrl, '_blank')}
+                                    >
+                                        Open
+                                    </Button>
+                                </Flex>
+                            </Card>
                         </Flex>
                     </Card>
                 </Stack>

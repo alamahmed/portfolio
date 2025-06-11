@@ -1,20 +1,17 @@
 import React from "react";
 import { Button, Card, Container, Flex, ScrollArea, Title } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import Project from '../../components/Project/index';
 import classes from './index.module.css';
-import { useMediaQuery } from "@mantine/hooks";
 
 const Projects = () => {
     const matches = useMediaQuery('(min-width: 56.25em)');
 
     return (
-        <Container size={'xl'}>
+        <Container size={'xl'} pt={'md'}>
             <Flex
-                h={matches ? '88vh' : 'fit-content'}
-                w={'100%'}
-                justify={'space-between'}
-                mt={matches ? '0' : 'md'}
                 direction={matches ? 'row' : 'column'}
+                gap={matches ? 0 : 'md'}
             >
                 <Flex 
                     align={'center'}
@@ -23,25 +20,27 @@ const Projects = () => {
                     <Card 
                         withBorder
                         radius={'lg'}
-                        p={'xl'}
+                        p={matches ? 'xl' : 'md'}
                         w={'100%'}
-                        h={'90%'}
+                        h={matches ? '90%' : 'auto'}
                     >
                         <Flex 
-                            h={"100%"}
+                            h={'100%'}
                             direction={'column'}
                             justify={'end'}
-
+                            gap={'md'}
                         >
                             <Title 
                                 order={2}
-                                mb={"md"}
+                                ta={'left'}
                             >
                                 Over the Past Few Years, <br /> I've worked on various Projects. <br />Here's few of my best:
                             </Title>
-                            <Button 
-                                w={'25%'} 
-                                color={"black"}
+                            <Button
+                                w={'fit-content'}
+                                h={'auto'}
+                                py={'md'}
+                                color={'black'}
                                 radius={'md'}
                             >
                                 Get in touch
@@ -49,10 +48,12 @@ const Projects = () => {
                         </Flex>
                     </Card>
                 </Flex>
-                <ScrollArea 
-                    w={matches ? '55%' : '100%'} 
+                <ScrollArea
                     classNames={classes}
-                    >
+                    pt={matches ? 'xl' : '0'}
+                    w={matches ? '55%' : '100%'}
+                    h={matches ? '89vh' : 'auto'}
+                >
                     <Project />
                 </ScrollArea>
             </Flex>

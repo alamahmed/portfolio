@@ -22,6 +22,28 @@ const theme = createTheme({
     ],
   },
   primaryColor: "primaryColors",
+  defaultRadius: 'md',
+  black: '#000000',
+  white: '#FFFFFF',
+  components: {
+    Text: {
+      styles: {
+        root: {
+          color: 'var(--mantine-color-black)',
+        },
+      },
+    },
+    Title: {
+      styles: {
+        root: {
+          color: 'var(--mantine-color-black)',
+        },
+      },
+    },
+  },
+  other: {
+    darkModeTextColor: 'var(--mantine-color-white)',
+  },
 });
 
 const root = ReactDOM.createRoot(
@@ -30,7 +52,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-      <MantineProvider theme={theme}>
+    <MantineProvider theme={theme} defaultColorScheme="auto">
       <App />
     </MantineProvider>
   </React.StrictMode>

@@ -1,0 +1,34 @@
+.darkCard {
+  position: relative;
+  isolation: isolate;
+}
+
+.darkCard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+[data-mantine-color-scheme="dark"] .darkCard::before {
+  opacity: 1;
+}
+
+.darkCard > * {
+  position: relative;
+  z-index: 1;
+}
+
+.techBadge {
+  color: var(--mantine-color-black) !important;
+  border-color: var(--mantine-color-black) !important;
+}
+
+[data-mantine-color-scheme="dark"] .techBadge {
+  color: var(--mantine-color-white) !important;
+  border-color: var(--mantine-color-white) !important;
+}

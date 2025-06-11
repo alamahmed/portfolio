@@ -1,4 +1,4 @@
-import { Card, Container, Flex, Text, Title } from "@mantine/core";
+import { Card, Container, Flex, Title } from "@mantine/core";
 import React from "react";
 // import classes from './index.module.css';
   
