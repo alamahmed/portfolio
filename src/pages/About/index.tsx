@@ -119,14 +119,14 @@ const About = () => {
         try {
             setIsSubmitting(true);
             await emailjs.send(
-                import.meta.env.VITE_EMAIL_SERVICE_ID,
-                import.meta.env.VITE_EMAIL_TEMPLATE_ID,
+                process.env.REACT_APP_EMAIL_SERVICE_ID || '',
+                process.env.REACT_APP_EMAIL_TEMPLATE_ID || '',
                 {
                     from_name: values.name,
                     from_email: values.email,
                     message: values.message,
                 },
-                import.meta.env.VITE_EMAIL_API_KEY
+                process.env.REACT_APP_EMAIL_API_KEY || ''
             );
             
             notifications.show({
@@ -137,6 +137,7 @@ const About = () => {
             
             form.reset();
         } catch (error) {
+            console.error("EmailJS Error:", error);
             notifications.show({
                 title: 'Error',
                 message: 'Failed to send message. Please try again later.',
