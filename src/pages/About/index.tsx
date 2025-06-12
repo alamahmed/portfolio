@@ -34,9 +34,9 @@ const About = () => {
             message: ''
         },
         validate: {
-            name: (value) => (value.length < 2 ? 'Name is too short' : null),
-            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-            message: (value) => (value.length < 10 ? 'Message is too short' : null),
+            name: (value: string) => (value.length < 2 ? 'Name is too short' : null),
+            email: (value: string) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+            message: (value: string) => (value.length < 10 ? 'Message is too short' : null),
         },
     });
 
