@@ -1,8 +1,7 @@
+import React from "react";
 import { Card, Container, Flex, Image, Title, Text, Button, Stack, Badge, Space, AspectRatio } from "@mantine/core";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 import logo from "../../resources/image.png";
-import React from "react";
-// import classes from './index.module.css';
   
 const About = () => {
 

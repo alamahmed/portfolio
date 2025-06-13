@@ -14,10 +14,10 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import { TwitterLogoIcon, LinkedInLogoIcon, GitHubLogoIcon, SunIcon, MoonIcon } from '@radix-ui/react-icons';
 import { Link } from 'react-router-dom';
-import classes from './index.module.css';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom'
 import { get_resume_url } from '../../api';
+import classes from './index.module.css';
 
 
 const Navbar = () => {
