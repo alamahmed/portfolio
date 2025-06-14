@@ -24,11 +24,7 @@ const StackCarousel = ( { cardData }:cardDataArray ) => {
   const [ cards, setCards ] = useState(cardData);
   const [count, setCount] = useState(2);
 
-  console.log('StackCarousel received data:', cardData);
-  console.log('Current cards state:', cards);
-
   useEffect(() => {
-    console.log('Setting initial cards:', cardData);
     setCards(cardData);
   }, [cardData]);
 

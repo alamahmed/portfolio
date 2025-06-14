@@ -9,6 +9,7 @@ import emailjs from '@emailjs/browser';
 import gmail from '../../resources/email.svg';
 import map from '../../resources/map.svg';
 import phone from '../../resources/phone.svg';
+import { useLocation } from 'react-router-dom';
 
 interface contact {
     address: string,
@@ -23,6 +24,7 @@ interface services {
 const About = () => {
     const matches = useMediaQuery('(min-width: 56.25em)');
     const colorScheme = useColorScheme();
+    const location = useLocation();
     const [about_me, setAboutMe] = useState<string[]>([]);
     const [contact_info, setContactInfo] = useState<contact[]>([]);
     const [service_data, setServiceData] = useState<services[]>([]);
@@ -63,6 +65,15 @@ const About = () => {
         get_data("contact_info", set_contact_info);
         get_data("my_services", set_service_data);
     }, [])
+
+    useEffect(() => {
+        if (location.hash === '#contact') {
+            const element = document.getElementById('contact');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }, [location]);
 
     const about_section = about_me.map((item) => {
         return (
@@ -137,7 +148,6 @@ const About = () => {
             
             form.reset();
         } catch (error) {
-            console.error("EmailJS Error:", error);
             notifications.show({
                 title: 'Error',
                 message: 'Failed to send message. Please try again later.',
@@ -190,6 +200,7 @@ const About = () => {
                 radius={'lg'}
                 p={matches ? 'xl' : 'md'}
                 mb={'xl'}
+                id="contact"
             >
                 <Title
                     p={matches ? 'md' : 'sm'}

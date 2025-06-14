@@ -1,11 +1,17 @@
 import React from "react";
 import { Button, Card, Container, Flex, ScrollArea, Title } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
+import { useNavigate } from "react-router-dom";
 import Project from '../../components/Project/index';
 import classes from './index.module.css';
 
 const Projects = () => {
     const matches = useMediaQuery('(min-width: 56.25em)');
+    const navigate = useNavigate();
+
+    const handleGetInTouch = () => {
+        navigate('/about#contact');
+    };
 
     return (
         <Container size={'xl'} pt={'md'}>
@@ -42,6 +48,7 @@ const Projects = () => {
                                 py={'md'}
                                 color={'black'}
                                 radius={'md'}
+                                onClick={handleGetInTouch}
                             >
                                 Get in touch
                             </Button>

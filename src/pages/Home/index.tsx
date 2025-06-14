@@ -62,9 +62,7 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        console.log('Fetching about me data...');
         get_about_me((data) => {
-            console.log('Received about me data:', data);
             setAboutMe(data);
         });
     }, []);

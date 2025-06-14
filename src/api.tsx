@@ -40,7 +40,6 @@ const get_about_me = async (callback: (data: string) => void) => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-        console.log("About me data:", docSnap.data());
         callback(docSnap.data().home_about || "");
     } else {
         console.error("About me document not found in Firebase");
@@ -74,7 +73,6 @@ const get_resume_url = async (callback: (url: string) => void) => {
     try {
         const resumeRef = ref(storage, "public-resources/resume.pdf");
         const url = await getDownloadURL(resumeRef);
-        console.log('Firebase Storage URL:', url); // Debug log
         callback(url);
     } catch (error) {
         console.error("Error fetching resume URL:", error);
@@ -82,7 +80,6 @@ const get_resume_url = async (callback: (url: string) => void) => {
         try {
             const fallbackRef = ref(storage, "resume.pdf");
             const fallbackUrl = await getDownloadURL(fallbackRef);
-            console.log('Fallback URL:', fallbackUrl);
             callback(fallbackUrl);
         } catch (fallbackError) {
             console.error("Error fetching fallback resume URL:", fallbackError);
@@ -102,15 +99,15 @@ const get_profile_picture = async (callback: (url: string) => void) => {
                 callback(profilePictureUrl);
             } else {
                 console.error("Profile picture URL not found in document");
-                callback("https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+                callback("");
             }
         } else {
             console.error("Profile picture document not found");
-            callback("https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+            callback("");
         }
     } catch (error) {
         console.error("Error fetching profile picture:", error);
-        callback("https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+        callback("");
     }
 };
 

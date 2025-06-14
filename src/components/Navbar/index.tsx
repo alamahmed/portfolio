@@ -27,7 +27,6 @@ const Navbar = () => {
 
   useEffect(() => {
     get_resume_url((url) => {
-      console.log('Resume URL:', url);
       setResumeUrl(url + '?alt=media');
     });
   }, []);
