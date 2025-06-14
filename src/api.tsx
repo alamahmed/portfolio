@@ -91,4 +91,27 @@ const get_resume_url = async (callback: (url: string) => void) => {
     }
 };
 
-export { get_data, get_projects_data, get_about_me, get_skills, get_resume_url };
+const get_profile_picture = async (callback: (url: string) => void) => {
+    try {
+        const docRef = doc(db, "my_data", "profile_picture");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const profilePictureUrl = docSnap.data().profile_picture_url;
+            if (profilePictureUrl) {
+                callback(profilePictureUrl);
+            } else {
+                console.error("Profile picture URL not found in document");
+                callback("https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+            }
+        } else {
+            console.error("Profile picture document not found");
+            callback("https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+        }
+    } catch (error) {
+        console.error("Error fetching profile picture:", error);
+        callback("https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    }
+};
+
+export { get_data, get_projects_data, get_about_me, get_skills, get_resume_url, get_profile_picture };

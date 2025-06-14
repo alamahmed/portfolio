@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import StackCarousel, { cardData } from '../../components/StackCarousel/index'
 import { AspectRatio, Card, Container, Flex, Image, Text, Title, Button, Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { get_skills, get_data, get_resume_url, get_about_me } from "../../api";
+import { get_skills, get_data, get_resume_url, get_about_me, get_profile_picture } from "../../api";
 
 interface projectData {
     name: string,
@@ -17,6 +17,7 @@ const Home = () => {
     const [resumeUrl, setResumeUrl] = useState('');
     const [projects, setProjects] = useState<cardData[]>([]);
     const [aboutMe, setAboutMe] = useState<string | null>(null);
+    const [profilePicture, setProfilePicture] = useState('');
 
     const set_projects_data = (data: {projects: projectData[]}) => {
         // Take only the first 3 projects and transform them for the carousel
@@ -68,6 +69,12 @@ const Home = () => {
         });
     }, []);
 
+    useEffect(() => {
+        get_profile_picture((url) => {
+            setProfilePicture(url);
+        });
+    }, []);
+
     const set_skills = skills.map((item, index) => {
         return (
             <Button 
@@ -98,7 +105,7 @@ const Home = () => {
                 >
                     <Card.Section w={matches ? '25%' : '100%'} m={0} p={'md'}>
                         <AspectRatio ratio={1/1}>
-                            <Image radius={'lg'} src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt={'image'}/>
+                            <Image radius={'lg'} src={profilePicture} alt={'Profile Picture'}/>
                         </AspectRatio>
                     </Card.Section>
                     <Card.Section w={matches ? '74%' : '100%'} m={0} p={'md'}>

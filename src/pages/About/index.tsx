@@ -161,7 +161,7 @@ const About = () => {
                 </Title>
                 <Flex
                     mt={'xl'} 
-                    px={matches ? 'md' : 'xs'}
+                    px={matches ? '0' : 'xs'}
                 >
                     <Grid>
                         {about_section}
