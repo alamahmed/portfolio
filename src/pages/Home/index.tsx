@@ -122,7 +122,7 @@ const Home = () => {
                 justify={matches ? 'space-between' : 'space-evenly'}
                 gap={matches ? 0 : 'md'}
             >
-                <Card withBorder radius={'lg'} py={matches ? 0 : 'xl'} h={matches ? 'auto' : '60vh'} w={matches ? '49%' : '100%'} p={matches ? 'xl' : 'md'}>
+                <Card withBorder radius={'lg'} py={'xl'} h={matches ? 'auto' : '60vh'} w={matches ? '49%' : '100%'} p={matches ? 'xl' : 'md'}>
                     <Card.Section px={matches ? 'xl' : 'md'} pb={'md'}>
                         <Title order={2}>My Projects</Title>
                     </Card.Section>
